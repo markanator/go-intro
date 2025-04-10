@@ -4,26 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"strconv"
 )
 
 const accountBalanceFile = "reports.txt"
-
-func getBalanceFromFile() (float64, error) {
-	data, err := os.ReadFile(accountBalanceFile)
-	if err != nil {
-		return 1000, errors.New("Could not read file")
-	}
-	// convert byte[] into string
-	balanceString := string(data)
-	// convert string to float
-	balanceFloat, err := strconv.ParseFloat(balanceString, 64)
-	if err != nil {
-		return 1000, errors.New("Could not parse balance")
-	}
-	// only return float
-	return balanceFloat, nil
-}
 
 func storeResults(ebt, profit, ratio float64) {
 	results := fmt.Sprintf("EBT: %.1f\nProfit: %.1f\nRatio: %.1f\n", ebt, profit, ratio)
@@ -31,17 +14,6 @@ func storeResults(ebt, profit, ratio float64) {
 }
 
 func main() {
-	//var revenue float64
-	//var expenses float64
-	//var taxRate float64
-
-	//fmt.Print("Enter Revenue: ")
-	//fmt.Scan(&revenue)
-	//fmt.Print("Enter Expenses: ")
-	//fmt.Scan(&expenses)
-	//fmt.Print("Enter Tax Rate: ")
-	//fmt.Scan(&taxRate)
-
 	revenue, err := getUserInput("Enter Revenue: ")
 	if err != nil {
 		fmt.Println(err)
@@ -58,10 +30,10 @@ func main() {
 		return
 	}
 
-	//ebt := revenue - expenses
-	//profit := ebt * (1 - taxRate/100)
-	//ratio := ebt / profit
-	ebt, profit, ratio := calculateFinancials(revenue, expenses, taxRate)
+	ebt := revenue - expenses
+	profit := ebt * (1 - taxRate/100)
+	ratio := ebt / profit
+	// ebt, profit, ratio := calculateFinancials(revenue, expenses, taxRate)
 
 	fmt.Printf("Ebt: %.1f\n", ebt)
 	fmt.Printf("Profit: %.1f\n", profit)
